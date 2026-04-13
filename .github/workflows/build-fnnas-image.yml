@@ -21,7 +21,7 @@ on:
       fnnas_board:
         description: "Select fnnas device board"
         required: false
-        default: "all"
+        default: "seewo-sv50"
         type: choice
         options:
           - all
@@ -201,6 +201,7 @@ on:
           - s922x-reva
           - s922x-ugoos-am6
           - seewo-sv21
+          - seewo-sv50
           - smart-am40
           - smart-am60
           - station-m1
@@ -235,6 +236,7 @@ on:
         type: choice
         options:
           - ophub/fnnas
+          - ColtPlus/fnnas
       fnnas_kernel:
         description: "Select fnnas kernel version"
         required: false
@@ -260,12 +262,12 @@ on:
       builder_name:
         description: "Set fnnas builder signature"
         required: false
-        default: "ophub"
+        default: "ColtPlus"
         type: choice
         options:
           - ophub
           - angel
-          - yourname
+          - ColtPlus
 
 env:
   TZ: Etc/UTC
