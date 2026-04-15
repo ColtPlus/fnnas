@@ -13,7 +13,7 @@ on:
       fnnas_base_version:
         description: "Select fnnas base image version"
         required: false
-        default: "amlogic_693"
+        default: "rockchip_692"
         type: choice
         options:
           - allwinner_691
@@ -26,7 +26,7 @@ on:
       debs_install:
         description: "Install kernel debs files"
         required: false
-        default: "none"
+        default: "rockchip"
         type: choice
         options:
           - amlogic
@@ -152,7 +152,7 @@ jobs:
           echo "status=success" >> ${GITHUB_OUTPUT}
 
       - name: Compile the FnNAS kernel
-        uses: ophub/fnnas@main
+        uses: ColtPlus/fnnas@main
         if: ${{ steps.down.outputs.status == 'success' && !cancelled() }}
         with:
           build_target: kernel
