@@ -507,7 +507,7 @@ query_kernel() {
                         sort -urV | head -n 1
                 )"
 
-                if [[ "${?}" -eq 0 && -n "${latest_version}" ]]; then
+                if [[ -n "${latest_version}" ]]; then
                     tmp_arr_kernels[${i}]="${latest_version}"
                 else
                     tmp_arr_kernels[${i}]="${kernel_var}"
@@ -528,14 +528,14 @@ query_kernel() {
 
 check_kernel() {
     [[ -n "${1}" ]] && check_path="${1}" || error_msg "Invalid kernel path to check."
-    check_files=($(cat "${check_path}/sha256sums" | awk '{print $2}'))
+    check_files=($(awk '{print $2}' "${check_path}/sha256sums"))
     for cf in "${check_files[@]}"; do
         {
             # Check if file exists
             [[ -s "${check_path}/${cf}" ]] || error_msg "The [ ${cf} ] file is missing."
-            # Check if the file sha256sum is correct
+            # Check if the file sha256sum is correct (exact filename match, no substring confusion)
             tmp_sha256sum="$(sha256sum "${check_path}/${cf}" | awk '{print $1}')"
-            tmp_checkcode="$(cat ${check_path}/sha256sums | grep ${cf} | awk '{print $1}')"
+            tmp_checkcode="$(awk -v f="${cf}" '$2==f {print $1}' "${check_path}/sha256sums")"
             [[ "${tmp_sha256sum}" == "${tmp_checkcode}" ]] || error_msg "[ ${cf} ]: sha256sum verification failed."
         }
     done
@@ -1111,36 +1111,36 @@ refactor_rootfs() {
     )
 
     # Add FnNAS system information
-    echo "PLATFORM='${PLATFORM}'" >>${ophub_release_file}
-    echo "VERSION_CODEID='${release_codeid}'" >>${ophub_release_file}
-    echo "VERSION_CODENAME='${release_codename}'" >>${ophub_release_file}
-    echo "MODEL_ID='${MODEL_ID}'" >>${ophub_release_file}
-    echo "MODEL_NAME='${MODEL_NAME}'" >>${ophub_release_file}
-    echo "SOC='${SOC}'" >>${ophub_release_file}
-    echo "FDTFILE='${FDTFILE}'" >>${ophub_release_file}
-    echo "FAMILY='${FAMILY}'" >>${ophub_release_file}
-    echo "BOARD='${board}'" >>${ophub_release_file}
-    echo "KERNEL_REPO='${kernel_repo}'" >>${ophub_release_file}
-    echo "KERNEL_TAGS='kernel_fnnas'" >>${ophub_release_file}
-    echo "KERNEL_VERSION='${kernel}'" >>${ophub_release_file}
-    echo "KERNEL_BACKUP='yes'" >>${ophub_release_file}
-    echo "BOOT_CONF='${BOOT_CONF}'" >>${ophub_release_file}
-    echo "ROOTFS_TYPE='btrfs'" >>${ophub_release_file}
-    echo "DISK_TYPE='usb'" >>${ophub_release_file}
-    echo "AMPART_STATUS='no'" >>${ophub_release_file}
-    echo "MLUBOOT_STATUS='no'" >>${ophub_release_file}
-    echo "MAINLINE_UBOOT='${RECORD_MAINLINE_UBOOT}'" >>${ophub_release_file}
-    echo "BOOTLOADER_IMG='${RECORD_BOOTLOADER_IMG}'" >>${ophub_release_file}
-    if [[ "${PLATFORM}" == "rockchip" ]]; then
-        echo "TRUST_IMG='${RECORD_TRUST_IMG}'" >>${ophub_release_file}
-    elif [[ "${PLATFORM}" == "amlogic" ]]; then
-        echo "UBOOT_OVERLOAD='${UBOOT_OVERLOAD}'" >>${ophub_release_file}
-    fi
-    echo "FNNAS_WEBSITE='fnnas.com'" >>${ophub_release_file}
-    echo "REBUILD_REPOSITORY='github.com/ophub/fnnas'" >>${ophub_release_file}
-    echo "CONTRIBUTORS='${CONTRIBUTORS}'" >>${ophub_release_file}
-    echo "BUILDER_NAME='${builder_name}'" >>${ophub_release_file}
-    echo "PACKAGED_DATE='$(date +%Y-%m-%d)'" >>${ophub_release_file}
+    release_lines=(
+        "PLATFORM='${PLATFORM}'"
+        "VERSION_CODEID='${release_codeid}'"
+        "VERSION_CODENAME='${release_codename}'"
+        "MODEL_ID='${MODEL_ID}'"
+        "MODEL_NAME='${MODEL_NAME}'"
+        "SOC='${SOC}'"
+        "FDTFILE='${FDTFILE}'"
+        "FAMILY='${FAMILY}'"
+        "BOARD='${board}'"
+        "KERNEL_REPO='${kernel_repo}'"
+        "KERNEL_TAGS='kernel_fnnas'"
+        "KERNEL_VERSION='${kernel}'"
+        "KERNEL_BACKUP='yes'"
+        "BOOT_CONF='${BOOT_CONF}'"
+        "ROOTFS_TYPE='btrfs'"
+        "DISK_TYPE='usb'"
+        "AMPART_STATUS='no'"
+        "MLUBOOT_STATUS='no'"
+        "MAINLINE_UBOOT='${RECORD_MAINLINE_UBOOT}'"
+        "BOOTLOADER_IMG='${RECORD_BOOTLOADER_IMG}'"
+        "FNNAS_WEBSITE='fnnas.com'"
+        "REBUILD_REPOSITORY='github.com/ophub/fnnas'"
+        "CONTRIBUTORS='${CONTRIBUTORS}'"
+        "BUILDER_NAME='${builder_name}'"
+        "PACKAGED_DATE='$(date +%Y-%m-%d)'"
+    )
+    [[ "${PLATFORM}" == "rockchip" ]] && release_lines+=("TRUST_IMG='${RECORD_TRUST_IMG}'")
+    [[ "${PLATFORM}" == "amlogic" ]] && release_lines+=("UBOOT_OVERLOAD='${UBOOT_OVERLOAD}'")
+    printf '%s\n' "${release_lines[@]}" >>${ophub_release_file}
 
     sync && sleep 3
 }
