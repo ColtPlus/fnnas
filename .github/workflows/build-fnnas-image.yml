@@ -24,7 +24,7 @@ on:
       fnnas_board:
         description: "Select fnnas device board"
         required: false
-        default: "all"
+        default: "seewo-sv50"
         type: choice
         options:
           - amlogic
@@ -203,6 +203,7 @@ on:
           - s922x-reva
           - s922x-ugoos-am6
           - seewo-sv21
+          - seewo-sv50
           - smart-am40
           - smart-am60
           - station-m1
@@ -234,14 +235,15 @@ on:
       kernel_repo:
         description: "Set fnnas kernel repository"
         required: false
-        default: "ophub/fnnas"
+        default: "ColtPlus/fnnas"
         type: choice
         options:
           - ophub/fnnas
+          - ColtPlus/fnnas
       fnnas_kernel:
         description: "Select fnnas kernel version"
         required: false
-        default: "6.18.y"
+        default: "6.12.y"
         type: choice
         options:
           - 6.18.y
@@ -267,7 +269,7 @@ on:
         options:
           - ophub
           - angel
-          - yourname
+          - ColtPlus
 
 env:
   TZ: Etc/UTC
