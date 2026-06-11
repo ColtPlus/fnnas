@@ -19,7 +19,7 @@ inputs:
   kernel_repo:
     description: "Select kernel repository."
     required: false
-    default: "ophub/fnnas"
+    default: "ColtPlus/fnnas"
   fnnas_kernel:
     description: "Select kernel version."
     required: false
