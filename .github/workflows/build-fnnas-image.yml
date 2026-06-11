@@ -24,7 +24,7 @@ on:
       fnnas_board:
         description: "Select fnnas device board"
         required: false
-        default: "rockchip50"
+        default: "seewo-sv32"
         type: choice
         options:
           - allwinner
@@ -212,6 +212,7 @@ on:
           - s922x-reva
           - s922x-ugoos-am6
           - seewo-sv21
+          - seewo-sv32
           - seewo-sv50
           - smart-am40
           - smart-am60
