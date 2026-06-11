@@ -74,19 +74,19 @@ host_release="$(cat /etc/os-release | grep '^VERSION_CODENAME=.*' | cut -d'=' -f
 # Personalized settings file for special devices, e.g., [ s922x-oes-plus ]
 board_release_file="etc/fnnas-board-release.conf"
 # Custom FnNAS firmware information file
-ophub_release_file="etc/ophub-release"
+ophub_release_file="etc/ColtPlus-release"
 # FnNAS configuration file
 fnnas_conf="etc/fnnas.conf"
 
 # Dependency files repository
 depends_repo="https://github.com/ophub/amlogic-s9xxx-armbian"
 # U-Boot files repository
-uboot_repo="https://github.com/ophub/u-boot"
+uboot_repo="https://github.com/ColtPlus/u-boot"
 # Firmware files repository
 firmware_repo="https://github.com/ophub/firmware"
 
 # Kernel download repository
-kernel_repo="https://github.com/ophub/fnnas"
+kernel_repo="https://github.com/ColtPlus/fnnas"
 # Default kernel versions
 allwinner_kernel=("6.12.y" "6.18.y")
 amlogic_kernel=("6.12.y" "6.18.y")
