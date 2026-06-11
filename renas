@@ -74,7 +74,7 @@ host_release="$(cat /etc/os-release | grep '^VERSION_CODENAME=.*' | cut -d'=' -f
 # Personalized settings file for special devices, e.g., [ s922x-oes-plus ]
 board_release_file="etc/fnnas-board-release.conf"
 # Custom FnNAS firmware information file
-ophub_release_file="etc/ColtPlus-release"
+ophub_release_file="etc/ophub-release"
 # FnNAS configuration file
 fnnas_conf="etc/fnnas.conf"
 
@@ -1141,7 +1141,7 @@ refactor_rootfs() {
         "MAINLINE_UBOOT='${RECORD_MAINLINE_UBOOT}'"
         "BOOTLOADER_IMG='${RECORD_BOOTLOADER_IMG}'"
         "FNNAS_WEBSITE='fnnas.com'"
-        "REBUILD_REPOSITORY='github.com/ophub/fnnas'"
+        "REBUILD_REPOSITORY='github.com/ColtPlus/fnnas'"
         "CONTRIBUTORS='${CONTRIBUTORS}'"
         "BUILDER_NAME='${builder_name}'"
         "PACKAGED_DATE='$(date +%Y-%m-%d)'"
