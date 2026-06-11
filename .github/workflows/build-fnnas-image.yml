@@ -212,7 +212,6 @@ on:
           - s922x-reva
           - s922x-ugoos-am6
           - seewo-sv21
-          - seewo-sv32
           - seewo-sv50
           - smart-am40
           - smart-am60
@@ -266,7 +265,7 @@ on:
       rootfs_expand:
         description: "Set rootfs expansion size(GiB)"
         required: false
-        default: "8"
+        default: "16"
       fnnas_url:
         description: "Custom fnnas image download url"
         required: false
