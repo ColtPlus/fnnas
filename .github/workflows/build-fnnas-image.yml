@@ -24,7 +24,7 @@ on:
       fnnas_board:
         description: "Select fnnas device board"
         required: false
-        default: "rockchip50"
+        default: "seewo-sv32"
         type: choice
         options:
           - allwinner
@@ -217,6 +217,7 @@ on:
           - s922x-reva
           - s922x-ugoos-am6
           - seewo-sv21
+          - seewo-sv32
           - seewo-sv50
           - smart-am40
           - smart-am60
@@ -249,10 +250,11 @@ on:
       kernel_repo:
         description: "Set fnnas kernel repository"
         required: false
-        default: "ophub/fnnas"
+        default: "ColtPlus/fnnas"
         type: choice
         options:
           - ophub/fnnas
+          - ColtPlus/fnnas
       fnnas_kernel:
         description: "Select fnnas kernel version"
         required: false
@@ -269,7 +271,7 @@ on:
       rootfs_expand:
         description: "Set rootfs expansion size(GiB)"
         required: false
-        default: "16"
+        default: "8"
       fnnas_url:
         description: "Custom fnnas image download url"
         required: false
@@ -277,12 +279,12 @@ on:
       builder_name:
         description: "Set fnnas builder signature"
         required: false
-        default: "ophub"
+        default: "ColtPlus"
         type: choice
         options:
           - ophub
           - angel
-          - yourname
+          - ColtPlus
 
 env:
   TZ: Etc/UTC
@@ -445,14 +447,14 @@ jobs:
 
           # Create directory symlinks for packaging
           ln -sf /builder/fnnas ${{ github.workspace }}/fnnas
-          ln -sf /builder/fnnas /home/runner/work/_actions/ophub/fnnas/main/fnnas
+          ln -sf /builder/fnnas /home/runner/work/_actions/ColtPlus/fnnas/main/fnnas
 
           echo "build_tag=${build_tag}" >> ${GITHUB_ENV}
           echo "status=success" >> ${GITHUB_OUTPUT}
 
       - name: Package FnNAS for target boards
         if: ${{ steps.down.outputs.status == 'success' && !cancelled() }}
-        uses: ophub/fnnas@main
+        uses: ColtPlus/fnnas@main
         with:
           fnnas_path: fnnas/*.img.xz
           fnnas_board: ${{ inputs.fnnas_board }}
